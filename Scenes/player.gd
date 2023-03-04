@@ -17,7 +17,7 @@ func _ready():
 	cell = grid.map_to_grid(position)
 	position = grid.grid_to_map(cell)
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if inventory != null:
 		inventory.position = grid.grid_to_map(cell + prevdir)
 	get_pickup_input()

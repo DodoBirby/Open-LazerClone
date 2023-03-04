@@ -11,7 +11,7 @@ var target: Block = null
 func _ready():
 	add_to_group("generators")
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if not powered:
 		return
 	if power < gentime:

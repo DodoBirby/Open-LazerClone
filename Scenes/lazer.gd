@@ -11,7 +11,7 @@ func _ready():
 func receive_power():
 	charge = 180
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if charge > 0:
 		charge -= 1
 

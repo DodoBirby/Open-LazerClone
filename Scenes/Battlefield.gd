@@ -20,6 +20,8 @@ func _ready():
 			var block: Block = child
 			block.removed.connect(_on_Block_removed)
 			place_block(child, cell)
+		if child is Shop:
+			child.create_block.connect(_on_Block_created)
 	add_block(wall, Vector2(2, 2), 0)
 
 
@@ -114,7 +116,7 @@ func clear_from_neighbours(block: Block):
 		neighbour.neighbours.erase(block)
 
 # Removes block from field and places in inventory of player
-func pickup_block(block: Block, pos: Vector2, player: Player):
+func pickup_block(block: Block, player: Player):
 	if player.team != block.team:
 		return
 	block.placed = false
@@ -141,23 +143,6 @@ func find_available_generator(requestor):
 			return neighbour
 	return null
 
-# Creates a new block and places in player inventory
-func purchase_block(shop: Shop, player: Player):
-	if player.team != shop.team:
-		return
-	var block: Block = shop.product.instantiate()
-	add_child(block)
-	block.placed = false
-	block.team = shop.team
-	block.removed.connect(_on_Block_removed)
-	block.position = grid.grid_to_map(player.cell + player.prevdir)
-	player.inventory = block
-
-# Removes block from player inventory and deletes from game
-func sell_block(block: Block, player: Player):
-	player.inventory = null
-	block.queue_free()
-
 # Sets target value of generators to connected lazers
 func calculate_energy_targets():
 	# Set all generator targets to null
@@ -177,8 +162,8 @@ func _on_Player_Interact(player: Player, pos: Vector2):
 	# Block in hand
 	if player.inventory != null:
 		if blockmap.has(pos):
-			if blockmap[pos] is Shop:
-				sell_block(player.inventory, player)
+			if blockmap[pos] is InteractBlock:
+				blockmap[pos].interact(player)
 			return
 		# Can't place out of bounds
 		if not grid.cell_in_bounds(pos):
@@ -188,10 +173,15 @@ func _on_Player_Interact(player: Player, pos: Vector2):
 		player.inventory = null
 	# If no block in hand but block in target tile
 	elif blockmap.has(pos):
-		if blockmap[pos] is Shop:
-			purchase_block(blockmap[pos], player)
+		if blockmap[pos] is InteractBlock:
+			blockmap[pos].interact(player)
 		else:
-			pickup_block(blockmap[pos], pos, player)
+			pickup_block(blockmap[pos], player)
 		
 func _on_Block_removed(block: Block):
 	remove_block(block)
+
+func _on_Block_created(block: Block):
+	add_child(block)
+	block.removed.connect(_on_Block_removed)
+	block.position = grid.grid_to_map(block.cell)

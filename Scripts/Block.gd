@@ -18,7 +18,7 @@ func _ready():
 	self.placed = true
 
 # Temporary, Puts a tint on blocks so team can be seen
-func _process(delta):
+func _process(_delta):
 	sprite.self_modulate = Color(1, 1 * team, 1, 1)
 
 func set_placed(value):
