@@ -9,6 +9,7 @@ var cell: Vector2
 var placed: bool: set = set_placed
 var neighbours: Array = []
 
+# Directions that block accepts connections from
 var connect_dirs = [Vector2.UP, Vector2.DOWN, Vector2.LEFT, Vector2.RIGHT]
 
 signal removed(block)
@@ -16,6 +17,7 @@ signal removed(block)
 func _ready():
 	self.placed = true
 
+# Temporary, Puts a tint on blocks so team can be seen
 func _process(delta):
 	sprite.self_modulate = Color(1, 1 * team, 1, 1)
 
