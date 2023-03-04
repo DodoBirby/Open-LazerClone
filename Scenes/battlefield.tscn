@@ -1,0 +1,16 @@
+[gd_scene load_steps=5 format=3 uid="uid://cmdrp4p4nr1bh"]
+
+[ext_resource type="Script" path="res://Scenes/Battlefield.gd" id="1_7fit0"]
+[ext_resource type="PackedScene" uid="uid://cgb2s3luo3gf5" path="res://Scenes/player.tscn" id="2_0gor8"]
+[ext_resource type="PackedScene" uid="uid://dex5kh15bvo0v" path="res://Scenes/shop.tscn" id="3_56hq3"]
+[ext_resource type="PackedScene" uid="uid://dagj804qghhun" path="res://Scenes/generator.tscn" id="4_467e2"]
+
+[node name="Battlefield" type="TileMap"]
+format = 2
+script = ExtResource("1_7fit0")
+
+[node name="Player" parent="." instance=ExtResource("2_0gor8")]
+
+[node name="Shop" parent="." instance=ExtResource("3_56hq3")]
+position = Vector2(41, 113)
+product = ExtResource("4_467e2")
